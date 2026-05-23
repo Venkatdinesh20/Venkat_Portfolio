@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Venkat Dinesh Pasupuleti — Applied ML Scientist & AI Engineer. 6.5 years building production GenAI, RAG, agentic AI and MLOps systems. Toronto, Canada.">
+  <meta property="og:title" content="Venkat Dinesh — ML Scientist & AI Engineer">
+  <meta property="og:description" content="6.5 years · Production AI Systems · GenAI · RAG · MLOps · Toronto, Canada">
+  <meta property="og:type" content="website">
+  <title>Venkat Dinesh Pasupuleti — ML Scientist</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Fira+Code:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    :root{--ink:#05080f;--ink2:#0c1220;--ink3:#141d2e;--ink4:#1c2840;--gold:#f0a500;--gold2:#ffcd60;--em:#00d9a6;--em2:#80ffdf;--ice:#c8d8f0;--mist:#5a7090;--fog:#2a3850;--white:#f0f4ff;--ff-head:'Outfit',sans-serif;--ff-mono:'Fira Code',monospace;--max:1140px;--ease:cubic-bezier(0.16,1,0.3,1)}
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth;scroll-padding-top:68px}
+    body{font-family:var(--ff-head);background:var(--ink);color:var(--ice);line-height:1.6;overflow-x:hidden}
+    ::selection{background:var(--gold);color:var(--ink)}
+    #canvas{position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.4}
+    body::after{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");opacity:.025;pointer-events:none;z-index:1}
+    .wrap{max-width:var(--max);margin:0 auto;padding:0 28px;position:relative;z-index:2}
+    nav{position:fixed;top:0;left:0;right:0;z-index:200;background:rgba(5,8,15,.75);backdrop-filter:blur(24px) saturate(180%);-webkit-backdrop-filter:blur(24px) saturate(180%);border-bottom:1px solid rgba(240,165,0,.08);transition:box-shadow .3s}
+    nav .wrap{height:64px;display:flex;align-items:center;justify-content:space-between}
+    .logo{font-family:var(--ff-head);font-weight:900;font-size:20px;color:var(--white);text-decoration:none;letter-spacing:-1px;display:flex;align-items:center;gap:6px}
+    .logo-dot{width:8px;height:8px;background:var(--gold);border-radius:50%;display:inline-block;animation:blink 2.4s infinite}
+    @keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+    .nav-links{display:flex;gap:4px;list-style:none}
+    .nav-links a{font-family:var(--ff-mono);font-size:11.5px;color:var(--mist);text-decoration:none;padding:6px 16px;border-radius:40px;transition:all .2s;letter-spacing:.5px}
+    .nav-links a:hover{color:var(--white);background:var(--ink3)}
+    .nav-cta{font-family:var(--ff-mono);font-size:11.5px;color:var(--ink);background:var(--gold);text-decoration:none;padding:7px 20px;border-radius:40px;font-weight:600;transition:all .2s;letter-spacing:.5px}
+    .nav-cta:hover{background:var(--gold2);transform:translateY(-1px)}
+    .ham{display:none;flex-direction:column;gap:4px;cursor:pointer;background:none;border:none;padding:4px}
+    .ham span{display:block;width:20px;height:1.5px;background:var(--ice);border-radius:2px;transition:all .2s}
+    .ham.open span:nth-child(1){transform:rotate(45deg) translate(4px,4px)}
+    .ham.open span:nth-child(2){opacity:0}
+    .ham.open span:nth-child(3){transform:rotate(-45deg) translate(4px,-4px)}
+    #hero{min-height:100vh;display:flex;align-items:center;padding:120px 0 80px;position:relative;z-index:2}
+    #hero::before{content:'';position:absolute;top:-10%;right:-5%;width:55%;height:120%;background:linear-gradient(135deg,rgba(240,165,0,.04) 0%,rgba(0,217,166,.02) 60%,transparent 100%);border-left:1px solid rgba(240,165,0,.06);transform:skewX(-8deg);pointer-events:none}
+    .hero-inner{display:grid;grid-template-columns:1fr auto;gap:60px;align-items:center}
+    .hero-eyebrow{display:inline-flex;align-items:center;gap:10px;font-family:var(--ff-mono);font-size:11px;color:var(--gold);letter-spacing:3px;text-transform:uppercase;margin-bottom:28px}
+    .hero-eyebrow::before{content:'';width:28px;height:1px;background:var(--gold)}
+    .hero-name{font-family:var(--ff-head);font-size:clamp(56px,9vw,110px);font-weight:900;line-height:.92;letter-spacing:-4px;color:var(--white);margin-bottom:28px}
+    .hero-name .line2{-webkit-text-stroke:1px rgba(240,165,0,.5);color:transparent;display:block}
+    .hero-name .line3{color:var(--gold);display:block;font-size:.38em;letter-spacing:2px;font-weight:400;font-family:var(--ff-mono);margin-top:16px}
+    .hero-desc{font-size:16px;color:var(--mist);max-width:500px;line-height:1.8;margin-bottom:44px;font-weight:300}
+    .hero-desc strong{color:var(--ice);font-weight:600}
+    .hero-btns{display:flex;gap:12px;flex-wrap:wrap}
+    .btn-gold{display:inline-flex;align-items:center;gap:8px;font-family:var(--ff-mono);font-size:12px;font-weight:600;color:var(--ink);background:var(--gold);border:none;padding:14px 32px;border-radius:4px;text-decoration:none;cursor:pointer;transition:all .25s var(--ease);letter-spacing:.5px;position:relative;overflow:hidden}
+    .btn-gold::after{content:'';position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(255,255,255,.2),transparent);transform:translateX(-100%);transition:transform .5s}
+    .btn-gold:hover{transform:translateY(-3px);box-shadow:0 12px 40px rgba(240,165,0,.35)}
+    .btn-gold:hover::after{transform:translateX(100%)}
+    .btn-line{display:inline-flex;align-items:center;gap:8px;font-family:var(--ff-mono);font-size:12px;font-weight:500;color:var(--ice);background:transparent;border:1px solid var(--fog);padding:13px 28px;border-radius:4px;text-decoration:none;cursor:pointer;transition:all .25s var(--ease)}
+    .btn-line:hover{border-color:var(--gold);color:var(--gold);transform:translateY(-3px)}
+    .hero-stats-tower{display:flex;flex-direction:column;gap:0;border-left:1px solid var(--fog)}
+    .stat-block{padding:24px 32px;border-bottom:1px solid var(--fog);position:relative}
+    .stat-block::before{content:'';position:absolute;left:-1px;top:0;bottom:0;width:3px;background:transparent;transition:background .3s}
+    .stat-block:hover::before{background:var(--gold)}
+    .stat-num{font-family:var(--ff-head);font-size:36px;font-weight:900;color:var(--white);letter-spacing:-2px;line-height:1}
+    .stat-num sub{font-size:18px;color:var(--gold);vertical-align:baseline}
+    .stat-lbl{font-family:var(--ff-mono);font-size:10px;color:var(--mist);letter-spacing:1.5px;text-transform:uppercase;margin-top:4px}
+    .marquee-wrap{border-top:1px solid var(--fog);border-bottom:1px solid var(--fog);padding:18px 0;overflow:hidden;background:var(--ink2);position:relative;z-index:2}
+    .marquee-track{display:flex;gap:0;width:max-content;animation:mq 28s linear infinite}
+    .marquee-track:hover{animation-play-state:paused}
+    @keyframes mq{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+    .marquee-item{display:flex;align-items:center;gap:10px;font-family:var(--ff-mono);font-size:12px;color:var(--mist);padding:0 32px;white-space:nowrap;transition:color .2s}
+    .marquee-item:hover{color:var(--gold)}
+    .marquee-sep{width:4px;height:4px;background:var(--fog);border-radius:50%;flex-shrink:0}
+    section{position:relative;z-index:2}
+    .sec-header{margin-bottom:56px}
+    .sec-number{font-family:var(--ff-mono);font-size:11px;color:var(--gold);letter-spacing:3px;text-transform:uppercase;margin-bottom:12px;display:flex;align-items:center;gap:12px}
+    .sec-number::after{content:'';flex:1;height:1px;background:var(--fog);max-width:60px}
+    .sec-title{font-family:var(--ff-head);font-size:clamp(36px,5vw,56px);font-weight:900;color:var(--white);letter-spacing:-2.5px;line-height:1.05}
+    .sec-title em{color:var(--gold);font-style:normal}
+    .sec-sub{font-size:15px;color:var(--mist);max-width:500px;line-height:1.75;margin-top:14px;font-weight:300}
+    #about{padding:100px 0;background:var(--ink2);border-bottom:1px solid var(--fog)}
+    .about-grid{display:grid;grid-template-columns:1fr 400px;gap:64px;align-items:start}
+    .about-body p{font-size:16px;color:var(--mist);line-height:1.85;margin-bottom:20px;font-weight:300}
+    .about-body p strong{color:var(--ice);font-weight:600}
+    .about-cards{display:flex;flex-direction:column;gap:16px}
+    .info-card{background:var(--ink3);border:1px solid var(--fog);border-radius:8px;padding:20px 24px;transition:border-color .2s,transform .2s}
+    .info-card:hover{border-color:rgba(240,165,0,.3);transform:translateX(4px)}
+    .info-card-label{font-family:var(--ff-mono);font-size:10px;color:var(--gold);letter-spacing:2px;text-transform:uppercase;margin-bottom:10px}
+    .info-card-main{font-size:14px;color:var(--white);font-weight:600;margin-bottom:4px}
+    .info-card-sub{font-family:var(--ff-mono);font-size:11px;color:var(--mist)}
+    .avail-pill{display:inline-flex;align-items:center;gap:8px;background:rgba(0,217,166,.08);border:1px solid rgba(0,217,166,.2);border-radius:40px;padding:8px 16px;font-family:var(--ff-mono);font-size:11px;color:var(--em);margin-top:16px}
+    .avail-dot{width:7px;height:7px;background:var(--em);border-radius:50%;animation:pulse 2s infinite}
+    @keyframes pulse{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(.7);opacity:.5}}
+    #skills{padding:100px 0}
+    .skills-bento{display:grid;grid-template-columns:repeat(12,1fr);gap:16px}
+    .sk-cell{background:var(--ink2);border:1px solid var(--fog);border-radius:10px;padding:24px;transition:all .3s var(--ease);position:relative;overflow:hidden}
+    .sk-cell::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(240,165,0,.04),transparent);opacity:0;transition:opacity .3s}
+    .sk-cell:hover{border-color:rgba(240,165,0,.25);transform:translateY(-3px);box-shadow:0 16px 48px rgba(0,0,0,.4)}
+    .sk-cell:hover::after{opacity:1}
+    .sk-cell-1{grid-column:span 4}.sk-cell-2{grid-column:span 4}.sk-cell-3{grid-column:span 4}
+    .sk-cell-4{grid-column:span 3}.sk-cell-5{grid-column:span 3}.sk-cell-6{grid-column:span 3}.sk-cell-7{grid-column:span 3}
+    .sk-icon{font-size:24px;margin-bottom:12px;display:block}
+    .sk-name{font-family:var(--ff-head);font-size:13px;font-weight:700;color:var(--white);margin-bottom:12px;letter-spacing:-.3px}
+    .sk-pills{display:flex;flex-wrap:wrap;gap:5px}
+    .pill{font-family:var(--ff-mono);font-size:10px;padding:3px 9px;border-radius:3px;background:var(--ink4);color:var(--mist);border:1px solid var(--fog);transition:all .15s;cursor:default}
+    .pill:hover{color:var(--white);border-color:var(--gold)}
+    .pill.g{background:rgba(240,165,0,.1);color:var(--gold2);border-color:rgba(240,165,0,.25)}
+    .pill.e{background:rgba(0,217,166,.08);color:var(--em2);border-color:rgba(0,217,166,.2)}
+    #experience{padding:100px 0;background:var(--ink2);border-top:1px solid var(--fog);border-bottom:1px solid var(--fog)}
+    .exp-list{display:flex;flex-direction:column;gap:0}
+    .exp-item{display:grid;grid-template-columns:200px 1fr;gap:40px;padding:40px 0;border-bottom:1px solid var(--fog);transition:background .2s}
+    .exp-item:last-child{border-bottom:none}
+    .exp-item:hover{background:rgba(240,165,0,.02)}
+    .exp-period{font-family:var(--ff-mono);font-size:11px;color:var(--gold);letter-spacing:1px;margin-bottom:8px}
+    .exp-company-tag{display:inline-block;font-family:var(--ff-mono);font-size:10px;color:var(--mist);background:var(--ink3);border:1px solid var(--fog);padding:4px 10px;border-radius:3px;margin-bottom:8px}
+    .exp-location{font-family:var(--ff-mono);font-size:10px;color:var(--fog);margin-top:4px}
+    .exp-role{font-family:var(--ff-head);font-size:22px;font-weight:800;color:var(--white);letter-spacing:-.8px;margin-bottom:12px}
+    .exp-desc{font-size:14px;color:var(--mist);line-height:1.8;margin-bottom:16px;font-weight:300;max-width:640px}
+    .exp-tags{display:flex;flex-wrap:wrap;gap:6px}
+    .etag{font-family:var(--ff-mono);font-size:10px;padding:3px 10px;border-radius:3px;background:var(--ink3);color:var(--mist);border:1px solid var(--fog)}
+    #projects{padding:100px 0}
+    .proj-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:24px}
+    .proj-card{background:var(--ink2);border:1px solid var(--fog);border-radius:10px;padding:32px;display:flex;flex-direction:column;gap:20px;position:relative;overflow:hidden;transition:all .35s var(--ease)}
+    .proj-card::before{content:'';position:absolute;inset:0;border-radius:10px;padding:1px;background:linear-gradient(135deg,var(--gold),var(--em),var(--gold));-webkit-mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);-webkit-mask-composite:xor;mask-composite:exclude;opacity:0;transition:opacity .35s}
+    .proj-card:hover{transform:translateY(-6px);box-shadow:0 32px 80px rgba(0,0,0,.5)}
+    .proj-card:hover::before{opacity:1}
+    .proj-top{display:flex;justify-content:space-between;align-items:flex-start}
+    .proj-emoji{font-size:32px;width:56px;height:56px;display:flex;align-items:center;justify-content:center;background:var(--ink3);border:1px solid var(--fog);border-radius:10px}
+    .proj-badge{font-family:var(--ff-mono);font-size:10px;color:var(--em);background:rgba(0,217,166,.08);border:1px solid rgba(0,217,166,.2);padding:4px 10px;border-radius:3px}
+    .proj-org{font-family:var(--ff-mono);font-size:10px;color:var(--gold);letter-spacing:2px;text-transform:uppercase;margin-bottom:6px}
+    .proj-name{font-family:var(--ff-head);font-size:22px;font-weight:800;color:var(--white);letter-spacing:-1px}
+    .proj-desc{font-size:13px;color:var(--mist);line-height:1.75;font-weight:300;flex:1}
+    .proj-metrics{display:flex;gap:20px;padding:16px 18px;background:var(--ink3);border-radius:6px;flex-wrap:wrap}
+    .pm{display:flex;flex-direction:column;gap:2px}
+    .pm-v{font-family:var(--ff-head);font-size:20px;font-weight:900;color:var(--white);letter-spacing:-1px;line-height:1}
+    .pm-v span{color:var(--gold)}
+    .pm-l{font-family:var(--ff-mono);font-size:9px;color:var(--mist);text-transform:uppercase;letter-spacing:1px}
+    .proj-stack{display:flex;flex-wrap:wrap;gap:5px}
+    #certifications{padding:100px 0;background:var(--ink2);border-top:1px solid var(--fog);border-bottom:1px solid var(--fog)}
+    .cert-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+    .cert-item{display:flex;align-items:center;gap:14px;padding:18px 20px;background:var(--ink3);border:1px solid var(--fog);border-radius:8px;transition:all .2s}
+    .cert-item:hover{border-color:rgba(240,165,0,.3);transform:translateY(-2px)}
+    .cert-ico{font-size:22px;width:42px;height:42px;display:flex;align-items:center;justify-content:center;background:rgba(240,165,0,.08);border-radius:8px;flex-shrink:0}
+    .cert-name{font-size:13px;color:var(--white);font-weight:600;margin-bottom:3px}
+    .cert-by{font-family:var(--ff-mono);font-size:10px;color:var(--mist)}
+    #contact{padding:100px 0}
+    .contact-layout{display:grid;grid-template-columns:1fr 520px;gap:64px;align-items:start}
+    .contact-big{font-family:var(--ff-head);font-size:clamp(40px,6vw,72px);font-weight:900;color:var(--white);letter-spacing:-3px;line-height:1.0;margin-bottom:32px}
+    .contact-big em{color:var(--gold);font-style:normal;display:block}
+    .contact-links{display:flex;flex-direction:column;gap:10px}
+    .cl{display:flex;align-items:center;gap:14px;padding:14px 18px;border:1px solid var(--fog);border-radius:6px;text-decoration:none;color:var(--mist);transition:all .2s}
+    .cl:hover{border-color:var(--gold);color:var(--white);transform:translateX(6px)}
+    .cl-ico{font-size:16px;width:34px;height:34px;display:flex;align-items:center;justify-content:center;background:var(--ink3);border-radius:6px}
+    .cl-label{font-family:var(--ff-mono);font-size:9px;color:var(--mist);letter-spacing:1px;text-transform:uppercase}
+    .cl-val{font-size:13px;font-weight:500;color:inherit}
+    .cform{display:flex;flex-direction:column;gap:14px}
+    .fg{display:flex;flex-direction:column;gap:6px}
+    .fl{font-family:var(--ff-mono);font-size:10px;color:var(--mist);letter-spacing:1.5px;text-transform:uppercase}
+    .fi{background:var(--ink2);border:1px solid var(--fog);border-radius:4px;padding:12px 16px;color:var(--white);font-family:var(--ff-head);font-size:14px;outline:none;transition:all .2s}
+    .fi::placeholder{color:var(--fog)}
+    .fi:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(240,165,0,.1)}
+    textarea.fi{resize:vertical;min-height:120px}
+    .fs{font-family:var(--ff-mono);font-size:11px;padding:10px 14px;border-radius:4px;display:none}
+    .fs.ok{display:block;background:rgba(0,217,166,.08);color:var(--em);border:1px solid rgba(0,217,166,.2)}
+    .fs.err{display:block;background:rgba(255,80,80,.08);color:#ff8080;border:1px solid rgba(255,80,80,.2)}
+    footer{padding:28px 0;background:var(--ink2);border-top:1px solid var(--fog);position:relative;z-index:2}
+    footer .wrap{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px}
+    .fc{font-family:var(--ff-mono);font-size:11px;color:var(--fog)}
+    .fc span{color:var(--gold)}
+    .reveal{opacity:0;transform:translateY(24px);transition:opacity .7s var(--ease),transform .7s var(--ease)}
+    .reveal.in{opacity:1;transform:none}
+    .reveal.d1{transition-delay:.1s}.reveal.d2{transition-delay:.2s}.reveal.d3{transition-delay:.3s}.reveal.d4{transition-delay:.4s}
+    @media(max-width:900px){.hero-inner{grid-template-columns:1fr}.hero-stats-tower{flex-direction:row;border-left:none;border-top:1px solid var(--fog);padding-top:20px;flex-wrap:wrap}.stat-block{border-bottom:none;border-right:1px solid var(--fog)}.about-grid{grid-template-columns:1fr}.sk-cell-1,.sk-cell-2,.sk-cell-3{grid-column:span 6}.sk-cell-4,.sk-cell-5,.sk-cell-6,.sk-cell-7{grid-column:span 6}.proj-grid{grid-template-columns:1fr}.cert-grid{grid-template-columns:repeat(2,1fr)}.contact-layout{grid-template-columns:1fr}.exp-item{grid-template-columns:1fr;gap:12px}}
+    @media(max-width:640px){.nav-links{display:none}.nav-links.open{display:flex;flex-direction:column;position:absolute;top:100%;left:0;right:0;background:rgba(5,8,15,.98);padding:20px 28px;border-bottom:1px solid var(--fog)}.ham{display:flex}.nav-cta{display:none}.sk-cell-1,.sk-cell-2,.sk-cell-3,.sk-cell-4,.sk-cell-5,.sk-cell-6,.sk-cell-7{grid-column:span 12}.cert-grid{grid-template-columns:1fr}.hero-btns{flex-direction:column}}
+    ::-webkit-scrollbar{width:4px}::-webkit-scrollbar-track{background:var(--ink)}::-webkit-scrollbar-thumb{background:var(--fog);border-radius:2px}::-webkit-scrollbar-thumb:hover{background:var(--gold)}
+  </style>
+</head>
+<body>
+<canvas id="canvas"></canvas>
+<nav id="nav">
+  <div class="wrap">
+    <a href="#hero" class="logo">VD<span class="logo-dot"></span></a>
+    <button class="ham" id="ham" aria-label="Menu" aria-expanded="false"><span></span><span></span><span></span></button>
+    <ul class="nav-links" id="navl">
+      <li><a href="#about">About</a></li>
+      <li><a href="#skills">Skills</a></li>
+      <li><a href="#experience">Experience</a></li>
+      <li><a href="#projects">Projects</a></li>
+      <li><a href="#certifications">Certs</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+    <a href="Venkat_Master_Resume.pdf" download class="nav-cta">Download CV ↓</a>
+  </div>
+</nav>
+
+<section id="hero">
+  <div class="wrap">
+    <div class="hero-inner">
+      <div>
+        <div class="hero-eyebrow">Applied ML Scientist · AI Engineer</div>
+        <h1 class="hero-name">Venkat<span class="line2">Dinesh</span><span class="line3">// Toronto, Canada · Available Now</span></h1>
+        <p class="hero-desc">I build <strong>production AI systems</strong> — agentic architectures, RAG pipelines, LLM applications, fraud detection, and document intelligence. <strong>6.5 years</strong> shipping ML from data to deployment to monitoring.</p>
+        <div class="hero-btns">
+          <a href="#contact" class="btn-gold">Let's Talk →</a>
+          <a href="https://linkedin.com/in/venkat-dinesh-s206" target="_blank" rel="noopener noreferrer" class="btn-line">↗ LinkedIn</a>
+          <a href="Venkat_Master_Resume.pdf" download class="btn-line">↓ Resume</a>
+        </div>
+      </div>
+      <div class="hero-stats-tower">
+        <div class="stat-block"><div class="stat-num">6.5<sub>yr</sub></div><div class="stat-lbl">Experience</div></div>
+        <div class="stat-block"><div class="stat-num">97<sub>K</sub></div><div class="stat-lbl">Lines Python</div></div>
+        <div class="stat-block"><div class="stat-num">90<sub>%</sub></div><div class="stat-lbl">Fraud Precision</div></div>
+        <div class="stat-block"><div class="stat-num">557</div><div class="stat-lbl">APIs Shipped</div></div>
+        <div class="stat-block"><div class="stat-num">50<sub>%</sub></div><div class="stat-lbl">OCR Reduction</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="marquee-wrap"><div class="marquee-track" id="mq"></div></div>
+
+<section id="about">
+  <div class="wrap">
+    <div class="sec-header reveal"><div class="sec-number">01 — About</div><h2 class="sec-title">Who I <em>am</em></h2></div>
+    <div class="about-grid">
+      <div class="about-body reveal">
+        <p>I'm an Applied ML Scientist and AI Engineer based in <strong>Windsor, Ontario</strong>, actively looking for senior ML/AI roles in <strong>Toronto and remote Canada</strong>. I've spent 6.5 years at the exact intersection of data science, AI engineering, and production software delivery.</p>
+        <p>At <strong>DeskIQ.ai (Jay Analytix Inc)</strong>, I built the entire AI backend from scratch — 97K lines of Python, agentic tool systems, RAG pipelines with hallucination prevention, LLM orchestration, and a full enterprise SaaS with RBAC and audit logging on GCP with Kubernetes autoscaling.</p>
+        <p>Before that, I spent 4 years delivering <strong>regulated ML in fintech</strong> at Vreedhi Financial Services — fraud detection at 90% precision, Azure ML OCR pipelines cutting manual entry by 50%, and XGBoost credit models with SHAP explainability for compliance teams.</p>
+        <p>I make thoughtful build-vs-buy decisions, write clean modular Python, and enjoy turning ambiguous business problems into shipped, monitored systems.</p>
+        <div class="avail-pill"><div class="avail-dot"></div>Open to full-time &amp; contract · Canada</div>
+      </div>
+      <div class="about-cards reveal d2">
+        <div class="info-card">
+          <div class="info-card-label">Work Authorization</div>
+          <div class="info-card-main">Open Work Authorization — Canada</div>
+          <div class="info-card-sub">Any employer · Any occupation · No restrictions on hours</div>
+        </div>
+        <div class="info-card">
+          <div class="info-card-label">Education</div>
+          <div class="info-card-main">PG Diploma — Data Analytics in Business</div>
+          <div class="info-card-sub">St. Clair College, Windsor ON · GPA 3.25/4</div>
+        </div>
+        <div class="info-card">
+          <div class="info-card-label">Also</div>
+          <div class="info-card-main">PG Program — Data Science · Grade A</div>
+          <div class="info-card-sub">INSOFE · National Hackathon: Ranked 8 / 120 Teams</div>
+        </div>
+        <div class="info-card">
+          <div class="info-card-label">Certification</div>
+          <div class="info-card-main">Microsoft Certified: Azure Data Scientist</div>
+          <div class="info-card-sub">DP-100 · Azure ML · MLOps</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="skills">
+  <div class="wrap">
+    <div class="sec-header reveal"><div class="sec-number">02 — Skills</div><h2 class="sec-title">The full <em>stack</em></h2><p class="sec-sub">Production experience across the complete ML and AI engineering lifecycle.</p></div>
+    <div class="skills-bento">
+      <div class="sk-cell sk-cell-1 reveal"><span class="sk-icon">🤖</span><div class="sk-name">GenAI &amp; LLMs</div><div class="sk-pills"><span class="pill g">GPT-4.1</span><span class="pill g">Claude Sonnet 4.5</span><span class="pill">Gemini</span><span class="pill">Llama 3.2</span><span class="pill">Mistral</span><span class="pill g">RAG</span><span class="pill g">Agentic AI</span><span class="pill">LangChain</span><span class="pill">Prompt Engineering</span><span class="pill">RAGAS</span></div></div>
+      <div class="sk-cell sk-cell-2 reveal d1"><span class="sk-icon">📊</span><div class="sk-name">Classical ML &amp; Deep Learning</div><div class="sk-pills"><span class="pill g">XGBoost</span><span class="pill g">TensorFlow</span><span class="pill">PyTorch</span><span class="pill">Scikit-learn</span><span class="pill">CNN · YOLOv3</span><span class="pill">Faster R-CNN</span><span class="pill g">SHAP</span><span class="pill">Extra Trees</span><span class="pill">Isolation Forest</span><span class="pill">ARIMA</span></div></div>
+      <div class="sk-cell sk-cell-3 reveal d2"><span class="sk-icon">📄</span><div class="sk-name">Document Intelligence</div><div class="sk-pills"><span class="pill g">Azure AI Doc Intel</span><span class="pill">Azure ML OCR</span><span class="pill">PDF Parsing</span><span class="pill">Table Extraction</span><span class="pill">Financial Docs</span><span class="pill">PyMuPDF</span><span class="pill">NER</span></div></div>
+      <div class="sk-cell sk-cell-4 reveal d1"><span class="sk-icon">🐍</span><div class="sk-name">Python Engineering</div><div class="sk-pills"><span class="pill g">Python</span><span class="pill g">FastAPI</span><span class="pill">Pydantic</span><span class="pill">async/await</span><span class="pill">WebSocket</span><span class="pill e">R</span></div></div>
+      <div class="sk-cell sk-cell-5 reveal d2"><span class="sk-icon">☁️</span><div class="sk-name">Cloud — Azure &amp; GCP</div><div class="sk-pills"><span class="pill g">Azure ML DP-100</span><span class="pill">Azure DevOps</span><span class="pill g">GKE</span><span class="pill">Cloud Run</span><span class="pill">Vertex AI</span><span class="pill">BigQuery</span></div></div>
+      <div class="sk-cell sk-cell-6 reveal d3"><span class="sk-icon">⚙️</span><div class="sk-name">MLOps</div><div class="sk-pills"><span class="pill g">MLflow</span><span class="pill g">Docker</span><span class="pill g">Kubernetes</span><span class="pill">GitHub Actions</span><span class="pill">Prometheus</span><span class="pill">Grafana</span><span class="pill">PSI Drift</span></div></div>
+      <div class="sk-cell sk-cell-7 reveal d4"><span class="sk-icon">🗄️</span><div class="sk-name">Data &amp; Storage</div><div class="sk-pills"><span class="pill">MongoDB</span><span class="pill">PostgreSQL</span><span class="pill">Redis</span><span class="pill">FAISS</span><span class="pill">PySpark</span><span class="pill">Power BI</span><span class="pill">Tableau</span></div></div>
+    </div>
+  </div>
+</section>
+
+<section id="experience">
+  <div class="wrap">
+    <div class="sec-header reveal"><div class="sec-number">03 — Experience</div><h2 class="sec-title">Where I've <em>shipped</em></h2></div>
+    <div class="exp-list">
+      <div class="exp-item reveal">
+        <div class="exp-meta"><div class="exp-period">Aug 2025 — Present</div><span class="exp-company-tag">Jay Analytix · DeskIQ.ai</span><div class="exp-location">📍 Windsor, ON · Remote · GCP</div></div>
+        <div class="exp-content"><div class="exp-role">Lead AI / ML Engineer</div><p class="exp-desc">Sole backend engineer for DeskIQ.ai — production AI Voice Receptionist SaaS on GCP. Built entire system from scratch: ~97K lines Python, 557 FastAPI endpoints, 8-tool agentic architecture, RAG with hallucination prevention, 71-permission RBAC, 365-day audit logging, GKE autoscaling. Telephony via Twilio; LLMs via GPT-4.1 and Claude Sonnet 4.5.</p><div class="exp-tags"><span class="etag">Python</span><span class="etag">FastAPI</span><span class="etag">GKE</span><span class="etag">GPT-4.1</span><span class="etag">Claude Sonnet 4.5</span><span class="etag">RAG</span><span class="etag">Twilio</span><span class="etag">MongoDB</span><span class="etag">MLflow</span></div></div>
+      </div>
+      <div class="exp-item reveal">
+        <div class="exp-meta"><div class="exp-period">Jun 2023 — Jan 2025</div><span class="exp-company-tag">Vreedhi Financial Services</span><div class="exp-location">📍 Hyderabad · On-site · Azure ML</div></div>
+        <div class="exp-content"><div class="exp-role">Lead Data Scientist — Fraud &amp; Document AI</div><p class="exp-desc">Led end-to-end ML for regulated lending fintech. Fraud detection at 90% precision (YOLOv3 + Faster R-CNN, ~$500K savings). Azure ML OCR pipeline for financial documents — 50% manual reduction. XGBoost loan approval with SHAP interpretability. Azure DevOps CI/CD with evaluation gates.</p><div class="exp-tags"><span class="etag">Azure ML</span><span class="etag">TensorFlow</span><span class="etag">XGBoost</span><span class="etag">SHAP</span><span class="etag">OCR</span><span class="etag">YOLOv3</span><span class="etag">Azure DevOps</span></div></div>
+      </div>
+      <div class="exp-item reveal">
+        <div class="exp-meta"><div class="exp-period">May 2021 — May 2023</div><span class="exp-company-tag">Vreedhi Financial Services</span><div class="exp-location">📍 Hyderabad · On-site</div></div>
+        <div class="exp-content"><div class="exp-role">Data Scientist</div><p class="exp-desc">Customer segmentation (Extra Trees, 82% accuracy, 100K+ records, ~20% campaign uplift), credit risk modeling with XGBoost, regulatory compliance dashboards in Power BI and Tableau.</p><div class="exp-tags"><span class="etag">Extra Trees</span><span class="etag">XGBoost</span><span class="etag">Power BI</span><span class="etag">Python</span><span class="etag">R</span></div></div>
+      </div>
+      <div class="exp-item reveal">
+        <div class="exp-meta"><div class="exp-period">Dec 2018 — Apr 2021</div><span class="exp-company-tag">Vinfosoft Solutions</span><div class="exp-location">📍 Hyderabad · On-site</div></div>
+        <div class="exp-content"><div class="exp-role">Data Analyst</div><p class="exp-desc">Demand forecasting (ARIMA, time series), SQL optimization (3x speed), Tableau / Power BI automation, ETL pipelines. 40% manual reporting reduction.</p><div class="exp-tags"><span class="etag">Python</span><span class="etag">R</span><span class="etag">SQL</span><span class="etag">Tableau</span><span class="etag">ARIMA</span></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="projects">
+  <div class="wrap">
+    <div class="sec-header reveal"><div class="sec-number">04 — Projects</div><h2 class="sec-title">What I've <em>built</em></h2><p class="sec-sub">Production systems at Jay Analytix — not demos, not tutorials.</p></div>
+    <div class="proj-grid">
+      <div class="proj-card reveal">
+        <div class="proj-top"><div class="proj-emoji">🔀</div><span class="proj-badge">Production · 2026</span></div>
+        <div><div class="proj-org">Jay Analytix Research</div><div class="proj-name">FinRoute AI</div></div>
+        <p class="proj-desc">Intelligent financial document intelligence pipeline routing tasks between SLM (Phi-3 Mini) and LLM (Claude Sonnet 4.5) via a 4-signal complexity classifier. Simple tasks → SLM at &lt;50ms. Fraud detection, anomaly analysis, risk assessment → LLM with XGBoost + SHAP. Auto-escalation when confidence &lt; 0.7.</p>
+        <div class="proj-metrics"><div class="pm"><div class="pm-v">73<span>%</span></div><div class="pm-l">SLM handled</div></div><div class="pm"><div class="pm-v">8<span>x</span></div><div class="pm-l">Cost reduction</div></div><div class="pm"><div class="pm-v">&lt;50<span>ms</span></div><div class="pm-l">SLM latency</div></div><div class="pm"><div class="pm-v">90<span>%+</span></div><div class="pm-l">Fraud precision</div></div></div>
+        <div class="proj-stack"><span class="pill">Python</span><span class="pill">FastAPI</span><span class="pill g">Phi-3 Mini</span><span class="pill g">Claude Sonnet 4.5</span><span class="pill">XGBoost</span><span class="pill">FAISS</span><span class="pill">Cloud Run</span><span class="pill">MLflow</span></div>
+      </div>
+      <div class="proj-card reveal d1">
+        <div class="proj-top"><div class="proj-emoji">📞</div><a href="https://deskiq.ai" target="_blank" rel="noopener noreferrer" style="font-family:var(--ff-mono);font-size:10px;color:var(--em);background:rgba(0,217,166,.08);border:1px solid rgba(0,217,166,.2);padding:4px 10px;border-radius:3px;text-decoration:none;">Live ↗</a></div>
+        <div><div class="proj-org">Jay Analytix · 2025–Present</div><div class="proj-name">DeskIQ.ai</div></div>
+        <p class="proj-desc">Production AI Voice Receptionist SaaS. Businesses get an AI that answers calls, converses naturally, books appointments, and takes actions. Built entire backend solo: agentic tool system (8 tools), RAG with hallucination prevention, multi-tenant SaaS, enterprise security, analytics pipeline.</p>
+        <div class="proj-metrics"><div class="pm"><div class="pm-v">97<span>K</span></div><div class="pm-l">Lines Python</div></div><div class="pm"><div class="pm-v">557</div><div class="pm-l">APIs</div></div><div class="pm"><div class="pm-v">71</div><div class="pm-l">RBAC perms</div></div><div class="pm"><div class="pm-v">9</div><div class="pm-l">Languages</div></div></div>
+        <div class="proj-stack"><span class="pill">Python</span><span class="pill">FastAPI</span><span class="pill g">GPT-4.1</span><span class="pill g">Claude Sonnet 4.5</span><span class="pill">GKE</span><span class="pill">Twilio</span><span class="pill">MongoDB</span></div>
+      </div>
+      <div class="proj-card reveal">
+        <div class="proj-top"><div class="proj-emoji">🔍</div><span class="proj-badge">Azure ML · 2023–2025</span></div>
+        <div><div class="proj-org">Vreedhi Financial Services</div><div class="proj-name">Fraud Detection System</div></div>
+        <p class="proj-desc">Document fraud detection for loan applications using computer vision. YOLOv3 + Faster R-CNN detecting forged IDs, fake bank statements, manipulated income proof. SHAP explainability for compliance audit. Deployed to Azure ML GPU cluster.</p>
+        <div class="proj-metrics"><div class="pm"><div class="pm-v">90<span>%</span></div><div class="pm-l">Precision</div></div><div class="pm"><div class="pm-v">$500<span>K</span></div><div class="pm-l">Saved / yr</div></div></div>
+        <div class="proj-stack"><span class="pill">TensorFlow</span><span class="pill">YOLOv3</span><span class="pill">Faster R-CNN</span><span class="pill g">Azure ML</span><span class="pill">SHAP</span></div>
+      </div>
+      <div class="proj-card reveal d1">
+        <div class="proj-top"><div class="proj-emoji">📑</div><span class="proj-badge">Azure AI · 2023–2025</span></div>
+        <div><div class="proj-org">Vreedhi Financial Services</div><div class="proj-name">OCR Document Pipeline</div></div>
+        <p class="proj-desc">Azure ML OCR pipeline for high-volume regulated financial documents — income statements, bank statements, identity documents. Table extraction, key-value parsing, structured JSON output. Validation rules against regulatory minimums. PII-aware encrypted storage with audit trail.</p>
+        <div class="proj-metrics"><div class="pm"><div class="pm-v">50<span>%</span></div><div class="pm-l">Manual reduced</div></div></div>
+        <div class="proj-stack"><span class="pill g">Azure AI Doc Intel</span><span class="pill">Azure ML</span><span class="pill">Python</span><span class="pill">Azure DevOps</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="certifications">
+  <div class="wrap">
+    <div class="sec-header reveal"><div class="sec-number">05 — Certifications</div><h2 class="sec-title">Credentials <em>&amp; awards</em></h2></div>
+    <div class="cert-grid">
+      <div class="cert-item reveal"><div class="cert-ico">🏆</div><div><div class="cert-name">Azure Data Scientist Associate</div><div class="cert-by">MICROSOFT · DP-100</div></div></div>
+      <div class="cert-item reveal d1"><div class="cert-ico">⚡</div><div><div class="cert-name">Prompt Engineering &amp; OpenAI</div><div class="cert-by">COLUMBIA+ · 2026</div></div></div>
+      <div class="cert-item reveal d2"><div class="cert-ico">🌐</div><div><div class="cert-name">Responsible AI</div><div class="cert-by">GOOGLE CLOUD · 2025</div></div></div>
+      <div class="cert-item reveal"><div class="cert-ico">🧠</div><div><div class="cert-name">Large Language Models</div><div class="cert-by">GOOGLE / COURSERA</div></div></div>
+      <div class="cert-item reveal d1"><div class="cert-ico">🤖</div><div><div class="cert-name">Generative AI &amp; Computer Vision</div><div class="cert-by">MICROSOFT LEARN</div></div></div>
+      <div class="cert-item reveal d2"><div class="cert-ico">🥇</div><div><div class="cert-name">National Hackathon — Ranked 8/120</div><div class="cert-by">INSOFE DATA SCIENCE</div></div></div>
+    </div>
+  </div>
+</section>
+
+<section id="contact">
+  <div class="wrap">
+    <div class="contact-layout">
+      <div class="reveal">
+        <div class="sec-number">06 — Contact</div>
+        <div class="contact-big">Let's<em>talk.</em></div>
+        <p style="font-size:15px;color:var(--mist);line-height:1.8;margin-bottom:32px;font-weight:300;max-width:400px;">Open to senior ML/AI roles, contract engagements, and collaborations across Canada. I reply within 24 hours.</p>
+        <div class="contact-links">
+          <a href="mailto:venkatdinesh63@gmail.com" class="cl"><div class="cl-ico">✉</div><div><div class="cl-label">Email</div><div class="cl-val">venkatdinesh63@gmail.com</div></div></a>
+          <a href="https://linkedin.com/in/venkat-dinesh-s206" target="_blank" rel="noopener noreferrer" class="cl"><div class="cl-ico">💼</div><div><div class="cl-label">LinkedIn</div><div class="cl-val">venkat-dinesh-s206</div></div></a>
+          <a href="tel:+12267872500" class="cl"><div class="cl-ico">📱</div><div><div class="cl-label">Phone / WhatsApp</div><div class="cl-val">+1 226-787-2500</div></div></a>
+          <a href="https://github.com" target="_blank" rel="noopener noreferrer" class="cl"><div class="cl-ico">⌨</div><div><div class="cl-label">GitHub</div><div class="cl-val">github.com/venkatdinesh</div></div></a>
+        </div>
+      </div>
+      <form class="cform reveal d2" id="cf">
+        <input type="hidden" name="access_key" value="YOUR_WEB3FORMS_KEY">
+        <input type="hidden" name="subject" value="Portfolio Contact — Recruiter / Opportunity">
+        <input type="checkbox" name="botcheck" style="display:none">
+        <div class="fg"><label class="fl" for="n">Your Name</label><input class="fi" type="text" id="n" name="name" placeholder="Recruiter / Hiring Manager" required></div>
+        <div class="fg"><label class="fl" for="e">Email Address</label><input class="fi" type="email" id="e" name="email" placeholder="your@company.com" required></div>
+        <div class="fg"><label class="fl" for="c">Company &amp; Role</label><input class="fi" type="text" id="c" name="company" placeholder="TD Bank · ML Scientist II"></div>
+        <div class="fg"><label class="fl" for="m">Message</label><textarea class="fi" id="m" name="message" placeholder="Tell me about the opportunity..." required></textarea></div>
+        <div class="fs" id="fs"></div>
+        <button type="submit" class="btn-gold" style="width:100%;justify-content:center;">Send Message →</button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="fc">© 2026 <span>Venkat Dinesh Pasupuleti</span> · Windsor, ON, Canada</div>
+    <div class="fc">Built with <span>HTML · CSS · JS</span> · Deployed on <span>GitHub Pages</span></div>
+  </div>
+</footer>
+
+<script>
+const cvs=document.getElementById('canvas'),ctx=cvs.getContext('2d');
+let W,H,pts=[];
+const resize=()=>{W=cvs.width=window.innerWidth;H=cvs.height=window.innerHeight};
+resize();window.addEventListener('resize',resize);
+for(let i=0;i<80;i++)pts.push({x:Math.random()*window.innerWidth,y:Math.random()*window.innerHeight,vx:(Math.random()-.5)*.3,vy:(Math.random()-.5)*.3,r:Math.random()*1.5+.5});
+const draw=()=>{ctx.clearRect(0,0,W,H);pts.forEach(p=>{p.x=(p.x+p.vx+W)%W;p.y=(p.y+p.vy+H)%H;ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fillStyle='rgba(240,165,0,.6)';ctx.fill()});for(let i=0;i<pts.length;i++)for(let j=i+1;j<pts.length;j++){const dx=pts[i].x-pts[j].x,dy=pts[i].y-pts[j].y,d=Math.sqrt(dx*dx+dy*dy);if(d<120){ctx.beginPath();ctx.moveTo(pts[i].x,pts[i].y);ctx.lineTo(pts[j].x,pts[j].y);ctx.strokeStyle=`rgba(240,165,0,${.08*(1-d/120)})`;ctx.lineWidth=.5;ctx.stroke()}}requestAnimationFrame(draw)};draw();
+const skills=['GPT-4.1','Claude Sonnet 4.5','RAG Pipelines','Agentic AI','XGBoost','TensorFlow','YOLOv3','SHAP','FastAPI','Python','GKE · Kubernetes','Azure ML DP-100','MLflow','Docker','Prompt Engineering','FAISS','MongoDB','LangChain','Fraud Detection','OCR Pipelines','Isolation Forest','Time Series','GCP Cloud Run','CI/CD'];
+const mq=document.getElementById('mq');[...skills,...skills].forEach(s=>{const sp=document.createElement('span');sp.className='marquee-item';sp.innerHTML=`${s} <i class="marquee-sep"></i>`;mq.appendChild(sp)});
+const ham=document.getElementById('ham'),navl=document.getElementById('navl');
+ham.addEventListener('click',()=>{const o=ham.classList.toggle('open');navl.classList.toggle('open');ham.setAttribute('aria-expanded',o)});
+navl.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>{ham.classList.remove('open');navl.classList.remove('open');ham.setAttribute('aria-expanded',false)}));
+window.addEventListener('scroll',()=>{document.getElementById('nav').style.boxShadow=window.scrollY>40?'0 4px 40px rgba(0,0,0,.6)':'none'},{passive:true});
+const obs=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');obs.unobserve(e.target)}})},{threshold:.1,rootMargin:'0px 0px -40px 0px'});
+document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+const secObs=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){document.querySelectorAll('.nav-links a').forEach(a=>{a.style.color=a.getAttribute('href')===`#${e.target.id}`?'var(--white)':'var(--mist)'})}})},{threshold:.4});
+document.querySelectorAll('section[id]').forEach(s=>secObs.observe(s));
+const cf=document.getElementById('cf'),fs=document.getElementById('fs');
+cf.addEventListener('submit',async e=>{e.preventDefault();const btn=cf.querySelector('button');btn.disabled=true;btn.textContent='Sending...';try{const res=await fetch('https://api.web3forms.com/submit',{method:'POST',headers:{'Content-Type':'application/json',Accept:'application/json'},body:JSON.stringify(Object.fromEntries(new FormData(cf)))});const data=await res.json();if(data.success){fs.className='fs ok';fs.textContent="✓ Sent! I'll reply within 24 hours.";cf.reset()}else throw new Error(data.message||'Failed')}catch(err){fs.className='fs err';fs.textContent='✗ '+err.message+' — Email: venkatdinesh63@gmail.com'}finally{btn.disabled=false;btn.textContent='Send Message →'}});
+</script>
+</body>
+</html>
