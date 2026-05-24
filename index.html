@@ -506,7 +506,7 @@
 <!-- GITHUB STATS -->
 <section id="github-stats" style="padding:0 0 100px;background:var(--bg2);border-top:1px solid var(--dim);padding-top:100px">
   <div class="wrap">
-    <div class="sec-header reveal"><div class="sec-number">02c — GitHub</div><h2 class="sec-title">Code <em>activity</em></h2><p class="sec-sub">Live stats from GitHub — replace YOUR_GITHUB_USERNAME with your actual handle.</p></div>
+    <div class="sec-header reveal"><div class="sec-number">02c — GitHub</div><h2 class="sec-title">Code <em>activity</em></h2><p class="sec-sub">Live stats pulled directly from GitHub.</p></div>
     <div class="github-grid reveal" id="gh-grid">
       <div class="gh-card"><div class="gh-num" id="gh-repos">--</div><div class="gh-label">Public Repos</div></div>
       <div class="gh-card"><div class="gh-num" id="gh-stars">--</div><div class="gh-label">Total Stars</div></div>
@@ -516,7 +516,7 @@
       </div>
     </div>
     <p style="font-family:'Fira Code',monospace;font-size:11px;color:var(--muted);margin-top:16px;text-align:center">
-      ⚠️ Replace <span style="color:var(--gold)">YOUR_GITHUB_USERNAME</span> in the JS below with your real GitHub username to activate live stats.
+      <!-- GitHub stats loaded automatically -->
     </p>
   </div>
 </section>
@@ -718,7 +718,7 @@ if(chartSec)chartObs.observe(chartSec);
 const GITHUB_USER='Venkatdinesh20';
 const langColors={'Python':'#3572A5','JavaScript':'#f1e05a','TypeScript':'#2b7489','R':'#198CE7','Shell':'#89e051','Dockerfile':'#384d54'};
 async function loadGithub(){
-  if(GITHUB_USER==='Venkatdinesh20'){
+  if(!GITHUB_USER||GITHUB_USER===''){
     document.getElementById('gh-repos').textContent='?';
     document.getElementById('gh-stars').textContent='?';
     document.getElementById('gh-langs').innerHTML='<div style="font-family:\'Fira Code\',monospace;font-size:11px;color:var(--muted)">Add your GitHub username in the JS to see live stats</div>';
