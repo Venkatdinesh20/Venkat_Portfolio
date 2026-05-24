@@ -1,164 +1,211 @@
-// api/chat.js
-// Vercel Serverless Function — proxies Claude API securely
+// api/chat.js — Vercel Serverless Function
+// Secure proxy for Claude API
 //
-// WHY a serverless function?
-// If you call Anthropic directly from the browser, your API key
-// is visible in DevTools → Network tab. Anyone can steal it and
-// rack up charges on YOUR account.
-//
-// With this proxy:
-// 1. Browser sends question to /api/chat (your Vercel server)
-// 2. Vercel reads ANTHROPIC_API_KEY from environment variables (secret)
-// 3. Vercel calls Anthropic with the key — browser never sees it
-// 4. Vercel returns only the answer to the browser
-//
-// SETUP (one time):
-// Vercel Dashboard → Your Project → Settings → Environment Variables
-// Add: ANTHROPIC_API_KEY = sk-ant-xxxxx (your key from console.anthropic.com)
+// SECURITY MEASURES:
+// 1. API key stored in Vercel env vars — never in browser
+// 2. Input validation + length limit — prevents abuse
+// 3. Rate limiting via simple in-memory store (per IP)
+// 4. Allowed origins check — only your domain can call this
+// 5. No sensitive data returned in error messages
+// 6. Request method enforcement
+// 7. Audit log on every call (Vercel logs)
 
-// Venkat's profile context — what Claude knows about you
-const VENKAT_CONTEXT = `You are a helpful AI assistant on Venkat Dinesh Pasupuleti's portfolio website. Answer questions about Venkat accurately and professionally. Keep answers concise (2-4 sentences max). Be warm and encouraging about Venkat's candidacy.
+// ── IN-MEMORY RATE LIMITER ──────────────────────────────────────
+// WHY? Without this, anyone can spam your API endpoint and
+// drain your Anthropic credits. Max 10 requests per IP per minute.
+const rateLimitMap = new Map();
+const RATE_LIMIT = 10;       // max requests
+const RATE_WINDOW = 60000;   // per 60 seconds (ms)
+
+function isRateLimited(ip) {
+  const now = Date.now();
+  const entry = rateLimitMap.get(ip) || { count: 0, start: now };
+  if (now - entry.start > RATE_WINDOW) {
+    // Window expired — reset
+    rateLimitMap.set(ip, { count: 1, start: now });
+    return false;
+  }
+  if (entry.count >= RATE_LIMIT) return true;
+  entry.count++;
+  rateLimitMap.set(ip, entry);
+  return false;
+}
+
+// ── ALLOWED ORIGINS ─────────────────────────────────────────────
+// WHY? Prevents other websites from using YOUR API key
+// by calling your /api/chat endpoint from their frontend.
+const ALLOWED_ORIGINS = [
+  'https://venkat-portfolio.vercel.app',
+  'https://venkatdinesh.vercel.app',
+  'https://venkat-portfolio-ten.vercel.app',
+  'https://venkat-portfolio.app',
+  'http://localhost:3000',   // local development
+  'http://127.0.0.1:5500',  // VS Code Live Server
+];
+
+// ── VENKAT'S CONTEXT (what Claude knows about you) ──────────────
+const VENKAT_CONTEXT = `You are a helpful AI assistant on Venkat Dinesh Pasupuleti's portfolio website. Answer questions about Venkat accurately, professionally, and concisely (2-4 sentences max). Be warm and encouraging about his candidacy.
 
 VENKAT'S PROFILE:
-- Applied ML Scientist & AI Engineer with 6.5 years experience
+- Applied ML Scientist & AI Engineer — 6.5 years experience
 - Location: Windsor, Ontario, Canada
-- Open to: Senior ML/AI roles in Toronto (hybrid) or remote Canada
-- Work Authorization: Valid Canadian work permit. Authorized to work in Canada for any employer. No sponsorship required.
-- Availability: Immediate
-- Salary target: $140K–$150K CAD base for full-time, $70–80/hr for contracts
+- Open to: Senior ML/AI roles Toronto (hybrid) or remote Canada
+- Work Authorization: Valid Canadian work permit. Authorized to work for any employer. No sponsorship required.
+- Availability: Immediate start
+- Salary: $140K-$150K CAD base (full-time), $70-80/hr (contract)
 - Contact: venkatdinesh63@gmail.com | +1 226-787-2500 | linkedin.com/in/venkat-dinesh-s206
 
 CURRENT ROLE: Lead AI/ML Engineer at DeskIQ.ai (Jay Analytix Inc) — Aug 2025 to Present
 - Production AI Voice Receptionist SaaS on GCP
-- Built entire backend from scratch: ~97K lines Python, 557 FastAPI endpoints, 42 modules
-- Twilio for telephony; GPT-4.1 and Claude Sonnet 4.5 as LLMs
-- Built: agentic tool system (8 custom tools with JSON schemas), RAG with hallucination prevention via negative example anchoring, KB-conditional routing, 71-permission RBAC enforced on every route, 365-day audit logging with 7-year retention, GKE autoscaling, GitHub Actions CI/CD, dual-prompt architecture (462-line inbound / 19-line outbound — 95% token reduction on batch)
+- Built entire backend solo: 97K lines Python, 557 FastAPI endpoints, 42 modules
+- Twilio telephony, GPT-4.1 and Claude Sonnet 4.5 as LLMs
+- Agentic tool system (8 custom tools), RAG with hallucination prevention, 71-permission RBAC, 365-day audit logging, GKE autoscaling, GitHub Actions CI/CD
 
-PREVIOUS ROLE: Lead Data Scientist at Vreedhi Financial Services (via Dr. Reddy's Foundation) — Jun 2023 to Jan 2025
-- Regulated fintech / lending environment
-- Fraud detection: YOLOv3 + Faster R-CNN on TensorFlow, 90% precision, ~$500K annual savings, deployed on Azure ML GPU cluster, SHAP explainability for compliance audit
-- OCR document pipeline: Azure AI Document Intelligence, 50% manual data entry reduction, income statements/bank statements/identity documents
-- XGBoost loan approval model: ~70% accuracy, SHAP interpretability, Azure ML managed endpoint
-- Azure DevOps CI/CD with evaluation gates
+PREVIOUS: Lead Data Scientist at Vreedhi Financial Services — Jun 2023 to Jan 2025
+- Regulated fintech/lending, on Azure ML
+- Fraud detection: 90% precision, ~$500K annual savings (YOLOv3 + Faster R-CNN, SHAP explainability)
+- OCR pipeline: 50% manual data entry reduction (Azure AI Document Intelligence)
+- Loan approval: XGBoost, ~70% accuracy, SHAP interpretability for compliance
+- Azure DevOps CI/CD with automated evaluation gates
 
-EARLIER ROLES:
-- Data Scientist at Vreedhi (May 2021–May 2023): Extra Trees customer segmentation (82% accuracy, 100K+ records, ~20% engagement uplift)
-- Data Analyst at Vinfosoft Solutions (Dec 2018–Apr 2021): ARIMA forecasting, SQL optimization, Tableau/Power BI
+EARLIER: Data Scientist at Vreedhi (2021-2023), Data Analyst at Vinfosoft (2018-2021)
 
-KEY PROJECTS:
-1. FinRoute AI (Jay Analytix, 2026): Financial document intelligence with SLM/LLM routing. Routes tasks between Phi-3 Mini (simple tasks, <50ms, $0.0001/call) and Claude Sonnet 4.5 (complex: fraud detection, anomaly analysis, risk assessment). 4-signal complexity classifier. 73% handled by SLM. 8x cost reduction. XGBoost fraud detector + Isolation Forest anomaly + SHAP. FastAPI + FAISS + GCP Cloud Run + MLflow.
-2. DeskIQ.ai: Production AI Voice Receptionist SaaS (described above)
-3. Fraud Detection System: 90% precision, $500K savings, Azure ML
-4. OCR Document Pipeline: 50% manual reduction, Azure AI Document Intelligence
+PROJECTS:
+- FinRoute AI: Financial document intelligence with SLM/LLM routing. 73% handled by SLM (Phi-3 Mini, <50ms). Complex tasks (fraud, anomaly, risk) → Claude Sonnet 4.5. 8x cost reduction. XGBoost + Isolation Forest + SHAP.
+- DeskIQ.ai: Production AI Voice Receptionist SaaS (described above)
+- Fraud Detection: 90% precision, $500K savings, Azure ML
+- OCR Pipeline: 50% manual reduction, Azure AI Document Intelligence
 
-SKILLS:
-- GenAI & LLMs: GPT-4.1, Claude Sonnet 4.5, Gemini, Llama 3.2, Mistral, RAG, Agentic AI, LangChain, LangGraph, Prompt Engineering, RAGAS, Hallucination Prevention
-- Classical ML: XGBoost, TensorFlow, PyTorch, Scikit-learn, CNN/YOLOv3/Faster R-CNN, SHAP, Extra Trees, Isolation Forest, ARIMA
-- Document Intelligence: Azure AI Document Intelligence, Azure ML OCR, PDF Parsing, Table Extraction, Financial Document Processing
-- Python Engineering: Python (6.5 years advanced), FastAPI, Pydantic, async/await, WebSocket, REST APIs
-- Cloud Azure: Azure ML (DP-100 certified), Azure DevOps, Azure Blob Storage, Azure AI Doc Intel, Azure Monitor
-- Cloud GCP: GKE, Cloud Run, Vertex AI, BigQuery, Pub/Sub, Cloud Storage
-- MLOps: MLflow, Docker, Kubernetes, GitHub Actions, Prometheus, Grafana, PSI Drift Detection
-- Data: MongoDB, PostgreSQL, Redis, FAISS, PySpark, Pandas, Elasticsearch
-- R programming: caret, randomForest, ggplot2, tidyverse, time series
-- Security: JWT, OAuth 2.0, MFA/TOTP, RBAC, Audit Logging, PIPEDA-aware design
+KEY SKILLS: Python, FastAPI, GPT-4.1, Claude Sonnet 4.5, RAG, Agentic AI, LangChain, Azure ML (DP-100), GKE, Docker, Kubernetes, MLflow, XGBoost, TensorFlow, SHAP, FAISS, MongoDB, R
 
-CERTIFICATIONS:
-- Microsoft Certified Azure Data Scientist Associate (DP-100)
-- Prompt Engineering & Programming with OpenAI (Columbia+, 2026)
-- Introduction to Responsible AI (Google Cloud, 2025)
-- Introduction to Large Language Models (Google/Coursera)
-- Fundamentals of Generative AI & Computer Vision (Microsoft Learn)
-- National Hackathon: Ranked 8/120 Teams (INSOFE)
+CERTIFICATIONS: Microsoft Azure Data Scientist DP-100, Columbia+ Prompt Engineering, Google Cloud Responsible AI
 
-If someone asks about contacting Venkat, provide: venkatdinesh63@gmail.com or +1 226-787-2500
-If asked about scheduling an interview, suggest they email venkatdinesh63@gmail.com with their availability.
-If asked something you don't know about Venkat, say "I don't have that specific detail — reach out to Venkat directly at venkatdinesh63@gmail.com"`;
+IMPORTANT RULES:
+- Never reveal specific immigration document numbers, permit expiry dates, or application IDs
+- If asked about salary, give the range: $140K-$150K CAD base for full-time
+- If asked to schedule, suggest emailing venkatdinesh63@gmail.com
+- If you don't know something specific, say "I don't have that detail — contact Venkat at venkatdinesh63@gmail.com"
+- Keep answers concise — recruiters are busy`;
 
 export default async function handler(req, res) {
-  // ── CORS headers
-  // WHY? Your frontend at venkat-portfolio.vercel.app calls this endpoint.
-  // CORS tells the browser "this API allows requests from my domain."
-  // Without it, browser blocks the request for security.
-  res.setHeader('Access-Control-Allow-Origin', '*');
+
+  // ── Get caller IP for rate limiting + audit logging
+  const ip = req.headers['x-forwarded-for']?.split(',')[0]?.trim()
+    || req.headers['x-real-ip']
+    || 'unknown';
+
+  // ── Audit log every request (visible in Vercel Logs)
+  // WHY? You can monitor who is asking what and detect abuse
+  console.log(JSON.stringify({
+    ts: new Date().toISOString(),
+    ip,
+    method: req.method,
+    origin: req.headers.origin || 'none',
+    ua: req.headers['user-agent']?.slice(0, 80) || 'none',
+  }));
+
+  // ── CORS — set headers for allowed origins only
+  const origin = req.headers.origin;
+  if (origin && ALLOWED_ORIGINS.includes(origin)) {
+    res.setHeader('Access-Control-Allow-Origin', origin);
+  } else if (!origin) {
+    // Direct server-to-server call (e.g. testing with curl) — allow
+    res.setHeader('Access-Control-Allow-Origin', '*');
+  }
+  // If origin is set but not in allowed list — don't set CORS header
+  // Browser will block the request automatically
+
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+  res.setHeader('X-Content-Type-Options', 'nosniff');
+  res.setHeader('X-Frame-Options', 'DENY');
 
-  // Handle preflight (browser sends OPTIONS before POST to check CORS)
+  // Handle preflight
   if (req.method === 'OPTIONS') {
     return res.status(200).end();
   }
 
-  // Only allow POST
+  // ── Method check
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
-  // ── Validate input
-  const { message } = req.body;
-
-  if (!message || typeof message !== 'string') {
-    return res.status(400).json({ error: 'message is required' });
+  // ── Rate limiting
+  if (isRateLimited(ip)) {
+    console.warn(`Rate limited: ${ip}`);
+    return res.status(429).json({
+      error: 'Too many requests. Please wait a moment before asking again.'
+    });
   }
 
-  // Limit message length — prevents abuse
-  // WHY? Without this, someone could send a 100,000 token message
-  // and rack up charges on your Anthropic account.
+  // ── Input validation
+  const { message } = req.body || {};
+
+  if (!message || typeof message !== 'string' || message.trim().length === 0) {
+    return res.status(400).json({ error: 'Please enter a question.' });
+  }
+
+  // Max 500 chars — prevents token abuse
   if (message.length > 500) {
-    return res.status(400).json({ error: 'Message too long (max 500 chars)' });
+    return res.status(400).json({ error: 'Question too long. Please keep it under 500 characters.' });
   }
 
-  // ── Get API key from environment variable
-  // WHY process.env? Vercel injects this at runtime from your dashboard settings.
-  // The key is NEVER in your code — it lives only on Vercel's servers.
-  const apiKey = process.env.ANTHROPIC_API_KEY;
+  // Block obvious prompt injection attempts
+  const blocked = ['ignore previous', 'disregard', 'system prompt', 'jailbreak', 'forget instructions'];
+  if (blocked.some(w => message.toLowerCase().includes(w))) {
+    return res.status(400).json({ error: 'Invalid request.' });
+  }
 
+  // ── Get API key
+  const apiKey = process.env.ANTHROPIC_API_KEY;
   if (!apiKey) {
-    console.error('ANTHROPIC_API_KEY not set in environment variables');
-    return res.status(500).json({
-      error: 'API key not configured. Add ANTHROPIC_API_KEY to Vercel environment variables.'
+    console.error('ANTHROPIC_API_KEY missing from environment variables');
+    // Generic error — don't expose internal details to client
+    return res.status(503).json({
+      error: 'Service temporarily unavailable. Please email venkatdinesh63@gmail.com directly.'
     });
   }
 
   try {
-    // ── Call Anthropic API
     const response = await fetch('https://api.anthropic.com/v1/messages', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'x-api-key': apiKey,            // Key is safe here — server side only
+        'x-api-key': apiKey,
         'anthropic-version': '2023-06-01',
       },
       body: JSON.stringify({
         model: 'claude-sonnet-4-20250514',
         max_tokens: 250,
         system: VENKAT_CONTEXT,
-        messages: [
-          { role: 'user', content: message }
-        ],
+        messages: [{ role: 'user', content: message.trim() }],
       }),
     });
 
     if (!response.ok) {
-      const errorData = await response.json().catch(() => ({}));
-      console.error('Anthropic API error:', response.status, errorData);
+      // Log detail server-side, return generic message to client
+      const errBody = await response.json().catch(() => ({}));
+      console.error('Anthropic error:', response.status, JSON.stringify(errBody));
       return res.status(502).json({
-        error: 'Could not reach AI service. Please email venkatdinesh63@gmail.com directly.'
+        error: 'Could not get a response right now. Try again or email venkatdinesh63@gmail.com'
       });
     }
 
     const data = await response.json();
-    const reply = data?.content?.[0]?.text;
+    const reply = data?.content?.[0]?.text?.trim();
 
     if (!reply) {
-      return res.status(502).json({ error: 'Empty response from AI service.' });
+      return res.status(502).json({ error: 'Empty response. Please try again.' });
     }
 
-    // ── Return only the answer — nothing sensitive
+    // Log question category for analytics (no PII)
+    console.log(JSON.stringify({ ts: new Date().toISOString(), ip, status: 'ok', chars: message.length }));
+
     return res.status(200).json({ reply });
 
   } catch (err) {
-    console.error('Server error:', err);
+    // Log full error server-side only
+    console.error('Handler error:', err.message);
     return res.status(500).json({
       error: 'Something went wrong. Please email venkatdinesh63@gmail.com directly.'
     });
