@@ -333,6 +333,38 @@
     /* ── RESPONSIVE ── */
     @media(max-width:900px){.hero-inner{grid-template-columns:1fr}.hero-stats-tower{flex-direction:row;border-left:none;border-top:1px solid var(--dim);padding-top:20px;flex-wrap:wrap}.stat-block{border-bottom:none;border-right:1px solid var(--dim)}.about-grid{grid-template-columns:1fr}.sk-cell-1,.sk-cell-2,.sk-cell-3{grid-column:span 6}.sk-cell-4,.sk-cell-5,.sk-cell-6,.sk-cell-7{grid-column:span 6}.proj-grid{grid-template-columns:1fr}.cert-grid{grid-template-columns:repeat(2,1fr)}.contact-layout{grid-template-columns:1fr}.exp-item{grid-template-columns:1fr;gap:12px}.blog-grid{grid-template-columns:1fr}.chart-grid{grid-template-columns:1fr}.chat-box{width:calc(100vw - 48px)}}
     @media(max-width:640px){.nav-links{display:none}.nav-links.open{display:flex;flex-direction:column;position:absolute;top:100%;left:0;right:0;background:var(--nav-bg);padding:20px 28px;border-bottom:1px solid var(--dim)}.ham{display:flex}.nav-cta{display:none}.sk-cell-1,.sk-cell-2,.sk-cell-3,.sk-cell-4,.sk-cell-5,.sk-cell-6,.sk-cell-7{grid-column:span 12}.cert-grid{grid-template-columns:1fr}.hero-btns{flex-direction:column}}
+
+    /* ── TERMINAL HERO STYLE ── */
+    .term-prompt{font-family:'Fira Code',monospace;font-size:12px;color:var(--gold);margin-bottom:8px;display:flex;align-items:center;gap:8px}
+    .term-prompt::before{content:'▶';font-size:9px;color:var(--em)}
+    .term-cursor{display:inline-block;width:8px;height:2px;background:var(--gold);margin-left:3px;vertical-align:middle;animation:cur .8s step-end infinite}
+    @keyframes cur{0%,100%{opacity:1}50%{opacity:0}}
+
+    /* ── LOGOS STRIP ── */
+    .logos-wrap{padding:20px 0;background:var(--bg);border-top:1px solid var(--dim);border-bottom:1px solid var(--dim);overflow:hidden;position:relative;z-index:2}
+    .logos-track{display:flex;gap:0;width:max-content;animation:lgmq 22s linear infinite}
+    .logos-track:hover{animation-play-state:paused}
+    @keyframes lgmq{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+    .logo-item{display:flex;align-items:center;justify-content:center;padding:0 32px;white-space:nowrap;font-family:'Fira Code',monospace;font-size:11px;color:var(--muted);gap:8px;transition:color .2s}
+    .logo-item:hover{color:var(--gold)}
+    .logo-item .li{font-size:16px}
+    .logos-fade-l{position:absolute;left:0;top:0;bottom:0;width:80px;background:linear-gradient(to right,var(--bg),transparent);z-index:1;pointer-events:none}
+    .logos-fade-r{position:absolute;right:0;top:0;bottom:0;width:80px;background:linear-gradient(to left,var(--bg),transparent);z-index:1;pointer-events:none}
+
+    /* ── TERMINAL TIMELINE ── */
+    #timeline{padding:100px 0;background:var(--bg);border-top:1px solid var(--dim)}
+    .term-window{background:var(--bg2);border:1px solid var(--dim);border-radius:12px;overflow:hidden;max-width:780px;margin:0 auto}
+    .term-titlebar{background:var(--bg3);padding:12px 16px;display:flex;align-items:center;gap:8px;border-bottom:1px solid var(--dim)}
+    .term-dot{width:11px;height:11px;border-radius:50%}
+    .term-dot.r{background:#ff5f57}.term-dot.y{background:#febc2e}.term-dot.g{background:#28c840}
+    .term-title{font-family:'Fira Code',monospace;font-size:11px;color:var(--muted);margin-left:8px}
+    .term-body{padding:24px;font-family:'Fira Code',monospace;font-size:13px;line-height:1.8}
+    .term-line{margin-bottom:4px;display:flex;gap:10px;flex-wrap:wrap}
+    .term-cmd{color:var(--em)}.term-arg{color:var(--gold)}.term-out{color:var(--muted);padding-left:20px;margin-bottom:12px}
+    .term-out strong{color:var(--text)}
+    .term-out .stat{color:var(--em);font-weight:600}
+    .term-blink{animation:cur .8s step-end infinite;color:var(--gold)}
+
     ::-webkit-scrollbar{width:4px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:var(--dim);border-radius:2px}::-webkit-scrollbar-thumb:hover{background:var(--gold)}
   </style>
 </head>
@@ -384,6 +416,7 @@
     <ul class="nav-links" id="navl">
       <li><a href="#about">About</a></li>
       <li><a href="#skills">Skills</a></li>
+      <li><a href="#timeline">Journey</a></li>
       <li><a href="#experience">Experience</a></li>
       <li><a href="#projects">Projects</a></li>
       <li><a href="#blog">Blog</a></li>
@@ -401,6 +434,7 @@
   <div class="wrap">
     <div class="hero-inner">
       <div>
+        <div class="term-prompt">venkat@prod:~$ whoami --role --location</div>
         <div class="hero-eyebrow">Applied ML Scientist · AI Engineer</div>
         <h1 class="hero-name">Venkat<span class="line2">Dinesh</span><span class="line3">// Toronto, Canada · Available Now</span></h1>
         <div class="typing-wrap">
@@ -427,6 +461,14 @@
 <div class="marquee-wrap"><div class="marquee-track" id="mq"></div></div>
 
 <!-- ABOUT -->
+
+<!-- TECH LOGOS STRIP -->
+<div class="logos-wrap">
+  <div class="logos-fade-l"></div>
+  <div class="logos-fade-r"></div>
+  <div class="logos-track" id="logos-track"></div>
+</div>
+
 <section id="about">
   <div class="wrap">
     <div class="sec-header reveal"><div class="sec-number">01 — About</div><h2 class="sec-title">Who I <em>am</em></h2></div>
@@ -491,6 +533,41 @@
 <!-- GITHUB STATS -->
 
 
+
+<!-- TERMINAL CAREER TIMELINE -->
+<section id="timeline">
+  <div class="wrap">
+    <div class="sec-header reveal">
+      <div class="sec-number">02d — Journey</div>
+      <h2 class="sec-title">Career <em>timeline</em></h2>
+    </div>
+    <div class="term-window reveal">
+      <div class="term-titlebar">
+        <div class="term-dot r"></div>
+        <div class="term-dot y"></div>
+        <div class="term-dot g"></div>
+        <span class="term-title">venkat@prod:~/career$ ./run_timeline.sh</span>
+      </div>
+      <div class="term-body">
+        <div class="term-line"><span class="term-cmd">load_year</span><span class="term-arg">--range 2018-2021</span></div>
+        <div class="term-out"><strong>Data Analyst @ Vinfosoft Solutions</strong><br>First production ML work — ARIMA forecasting, SQL optimization, BI automation. Learned that clean data is harder than clean models. <span class="stat">40% reporting reduction.</span> Status: <span class="stat">Foundation Built ✓</span></div>
+
+        <div class="term-line"><span class="term-cmd">load_year</span><span class="term-arg">--range 2021-2023</span></div>
+        <div class="term-out"><strong>Data Scientist @ Vreedhi Financial Services</strong><br>First regulated fintech ML — XGBoost credit scoring, customer segmentation. Learned SHAP explainability matters more than accuracy when compliance teams review your model. <span class="stat">82% accuracy, 100K+ records.</span> Status: <span class="stat">Production ML ✓</span></div>
+
+        <div class="term-line"><span class="term-cmd">load_year</span><span class="term-arg">--range 2023-2025</span></div>
+        <div class="term-out"><strong>Lead Data Scientist @ Vreedhi Financial Services</strong><br>Fraud detection at scale — YOLOv3 + Faster R-CNN, Azure ML, SHAP for audit. Built OCR pipeline that eliminated manual document entry. <span class="stat">90% precision · ~$500K/yr savings · 50% manual reduction.</span> Status: <span class="stat">Senior ML Engineer ✓</span></div>
+
+        <div class="term-line"><span class="term-cmd">load_year</span><span class="term-arg">--range 2025-present</span></div>
+        <div class="term-out"><strong>Lead AI/ML Engineer @ DeskIQ.ai (Jay Analytix)</strong><br>First time building a production AI SaaS from scratch — agentic systems, RAG, LLM orchestration, GKE, multi-tenant security. Also shipped a Production RAG system with hybrid retrieval live at venkatdinesh-rag.hf.space. <span class="stat">42 modules · 557 APIs · Live production.</span> Status: <span class="stat">AI Architect ✓</span></div>
+
+        <div class="term-line"><span class="term-cmd">load_year</span><span class="term-arg">--current</span></div>
+        <div class="term-out"><strong>Seeking: Senior ML/AI Role in Toronto — Canada</strong><br>7+ years of shipping. Looking for a team where I can bring GenAI depth + regulated fintech experience together at scale. <span class="stat">Available now.</span> Status: <span class="term-blink">█</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- EXPERIENCE -->
 <section id="experience">
   <div class="wrap">
@@ -539,27 +616,6 @@
       </div>
       <div class="proj-card reveal d1"><div class="proj-top"><div class="proj-emoji">📞</div><a href="https://deskiq.ai" target="_blank" rel="noopener noreferrer" style="font-family:'Fira Code',monospace;font-size:10px;color:var(--em);background:rgba(0,217,166,.08);border:1px solid rgba(0,217,166,.2);padding:4px 10px;border-radius:3px;text-decoration:none;">Live ↗</a></div><div><div class="proj-org">Jay Analytix · 2025–Present</div><div class="proj-name">DeskIQ.ai</div></div><p class="proj-desc">Production AI Voice Receptionist SaaS. Built entire backend solo: agentic tool system (8 tools), RAG with hallucination prevention, multi-tenant SaaS, enterprise security, analytics pipeline.</p><div class="proj-metrics"><div class="pm"><div class="pm-v">42<span></span></div><div class="pm-l">Modules</div></div><div class="pm"><div class="pm-v">557</div><div class="pm-l">APIs</div></div><div class="pm"><div class="pm-v">71</div><div class="pm-l">RBAC perms</div></div><div class="pm"><div class="pm-v">9</div><div class="pm-l">Languages</div></div></div><div class="proj-stack"><span class="pill">Python</span><span class="pill">FastAPI</span><span class="pill g">GPT-4.1</span><span class="pill g">Claude Sonnet 4.5</span><span class="pill">GKE</span><span class="pill">Twilio</span><span class="pill">MongoDB</span></div></div>
       
-      <div class="proj-card reveal">
-        <div class="proj-top">
-          <div class="proj-emoji">🔍</div>
-          <a href="https://venkatdinesh-rag.hf.space" target="_blank" rel="noopener noreferrer" style="font-family:'Fira Code',monospace;font-size:10px;color:var(--em);background:rgba(0,217,166,.08);border:1px solid rgba(0,217,166,.2);padding:4px 10px;border-radius:3px;text-decoration:none;">Live Demo ↗</a>
-        </div>
-        <div>
-          <div class="proj-org">Hugging Face Spaces · 2026</div>
-          <div class="proj-name">Production RAG System</div>
-        </div>
-        <p class="proj-desc">Production-grade Retrieval-Augmented Generation system with hybrid retrieval (BM25 + FAISS), cross-encoder reranking, streaming responses, built-in observability (latency, token count, confidence score per query), Docker multi-stage build, and 50+ test suite. Deployed on Hugging Face Spaces — $0/month.</p>
-        <div class="proj-metrics">
-          <div class="pm"><div class="pm-v">Hybrid<span></span></div><div class="pm-l">BM25 + FAISS</div></div>
-          <div class="pm"><div class="pm-v">50<span>+</span></div><div class="pm-l">Tests</div></div>
-          <div class="pm"><div class="pm-v">Live<span></span></div><div class="pm-l">HF Spaces</div></div>
-        </div>
-        <div class="proj-stack">
-          <span class="pill g">RAG</span><span class="pill">BM25</span><span class="pill g">FAISS</span>
-          <span class="pill">Cross-Encoder Reranker</span><span class="pill">Streaming</span>
-          <span class="pill">Docker</span><span class="pill">GPT-4o-mini</span><span class="pill e">HF Spaces</span>
-        </div>
-      </div>
       <div class="proj-card reveal"><div class="proj-top"><div class="proj-emoji">🔍</div><span class="proj-badge">Azure ML · 2023–2025</span></div><div><div class="proj-org">Vreedhi Financial Services</div><div class="proj-name">Fraud Detection System</div></div><p class="proj-desc">Document fraud detection using computer vision. YOLOv3 + Faster R-CNN detecting forged IDs, fake bank statements, manipulated income proof. SHAP explainability for compliance audit. Deployed to Azure ML GPU cluster.</p><div class="proj-metrics"><div class="pm"><div class="pm-v">90<span>%</span></div><div class="pm-l">Precision</div></div><div class="pm"><div class="pm-v">$500<span>K</span></div><div class="pm-l">Saved / yr</div></div></div><div class="proj-stack"><span class="pill">TensorFlow</span><span class="pill">YOLOv3</span><span class="pill">Faster R-CNN</span><span class="pill g">Azure ML</span><span class="pill">SHAP</span></div></div>
       <div class="proj-card reveal d1"><div class="proj-top"><div class="proj-emoji">📑</div><span class="proj-badge">Azure AI · 2023–2025</span></div><div><div class="proj-org">Vreedhi Financial Services</div><div class="proj-name">OCR Document Pipeline</div></div><p class="proj-desc">Azure ML OCR pipeline for high-volume regulated financial documents — income statements, bank statements, identity documents. Table extraction, key-value parsing, structured JSON output. PII-aware encrypted storage with audit trail.</p><div class="proj-metrics"><div class="pm"><div class="pm-v">50<span>%</span></div><div class="pm-l">Manual reduced</div></div></div><div class="proj-stack"><span class="pill g">Azure AI Doc Intel</span><span class="pill">Azure ML</span><span class="pill">Python</span><span class="pill">Azure DevOps</span></div></div>
     </div>
@@ -577,7 +633,7 @@
           <div class="blog-title">Why I chose RAG over fine-tuning at DeskIQ — and when I'd switch</div>
           <p class="blog-excerpt">Each of DeskIQ's 500+ business clients has a different knowledge base that updates constantly. Here's the architectural decision that saved us from a fine-tuning nightmare...</p>
         </div>
-        <div class="blog-card-bottom"><span class="blog-date">Coming soon</span></div>
+        <div class="blog-card-bottom"><span class="blog-date">May 2026</span><a href="https://linkedin.com/in/venkat-dinesh-s206" target="_blank" rel="noopener noreferrer" class="blog-read" style="text-decoration:none;color:var(--gold);font-family:'Fira Code',monospace;font-size:10px;">Read on LinkedIn ↗</a></div>
       </div>
       <div class="blog-card reveal d1">
         <div class="blog-card-top">
@@ -585,7 +641,7 @@
           <div class="blog-title">Fraud detection at 90% precision: what actually worked</div>
           <p class="blog-excerpt">Everyone talks about the model. Nobody talks about threshold tuning with the risk team, the SHAP explainability requirements, and why we chose precision over recall...</p>
         </div>
-        <div class="blog-card-bottom"><span class="blog-date">Coming soon</span></div>
+        <div class="blog-card-bottom"><span class="blog-date">Apr 2026</span><a href="https://linkedin.com/in/venkat-dinesh-s206" target="_blank" rel="noopener noreferrer" class="blog-read" style="text-decoration:none;color:var(--gold);font-family:'Fira Code',monospace;font-size:10px;">Read on LinkedIn ↗</a></div>
       </div>
       <div class="blog-card reveal d2">
         <div class="blog-card-top">
@@ -593,11 +649,11 @@
           <div class="blog-title">The dual-prompt architecture that cut our LLM cost by 95%</div>
           <p class="blog-excerpt">A production incident taught me that the same LLM doing inbound calls and batch outbound campaigns is a $40K/month mistake. Here's the fix...</p>
         </div>
-        <div class="blog-card-bottom"><span class="blog-date">Coming soon</span></div>
+        <div class="blog-card-bottom"><span class="blog-date">Mar 2026</span><a href="https://linkedin.com/in/venkat-dinesh-s206" target="_blank" rel="noopener noreferrer" class="blog-read" style="text-decoration:none;color:var(--gold);font-family:'Fira Code',monospace;font-size:10px;">Read on LinkedIn ↗</a></div>
       </div>
     </div>
     <div class="blog-soon reveal">
-      📝 More articles coming — building FinRoute AI, SLM vs LLM routing, OSFI compliance for AI in Canadian banking
+      ✍️ Publishing regularly on LinkedIn — follow for new articles on production AI engineering, RAG systems, and ML in banking.
     </div>
   </div>
 </section>
@@ -815,6 +871,29 @@ function askSug(btn){
 
 chatSend.addEventListener('click',()=>sendChat(chatInp.value));
 chatInp.addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendChat(chatInp.value)}});
+
+
+// ── TECH LOGOS STRIP ─────────────────────────────────────────────
+const techLogos=[
+  {icon:'🐍',name:'Python'},{icon:'⚡',name:'FastAPI'},
+  {icon:'☁️',name:'GCP'},{icon:'🔷',name:'Azure ML'},
+  {icon:'🐳',name:'Docker'},{icon:'☸️',name:'Kubernetes'},
+  {icon:'🤖',name:'Claude Sonnet 4.5'},{icon:'🧠',name:'GPT-4.1'},
+  {icon:'📞',name:'Twilio'},{icon:'🔍',name:'FAISS'},
+  {icon:'📊',name:'MLflow'},{icon:'🔥',name:'TensorFlow'},
+  {icon:'🌲',name:'XGBoost'},{icon:'🤗',name:'HuggingFace'},
+  {icon:'⚙️',name:'GitHub Actions'},{icon:'📈',name:'Prometheus'},
+  {icon:'🗄️',name:'MongoDB'},{icon:'🔑',name:'Azure DevOps'},
+];
+const lt=document.getElementById('logos-track');
+if(lt){
+  [...techLogos,...techLogos].forEach(({icon,name})=>{
+    const el=document.createElement('div');
+    el.className='logo-item';
+    el.innerHTML=`<span class="li">${icon}</span>${name}`;
+    lt.appendChild(el);
+  });
+}
 
 // ── 11. CONTACT FORM ─────────────────────────────────────────────
 const cf=document.getElementById('cf'),fst=document.getElementById('fst');
