@@ -2,7 +2,7 @@
 
 **Live site:** https://venkat-portfolio-ten.vercel.app
 
-Applied ML Scientist & AI Engineer with 6.5 years building production 
+Applied ML Scientist & AI Engineer with 7+ years building production 
 AI systems — GenAI, RAG, agentic architectures, MLOps on Azure & GCP.
 
 ## Stack
