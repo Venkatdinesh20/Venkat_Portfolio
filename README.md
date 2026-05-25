@@ -1,6 +1,6 @@
 # Venkat Dinesh Pasupuleti — Portfolio
 
-**Live site:** https://venkat-portfolio-ten.vercel.app
+**Live site:** https://venkatdinesh.vercel.app/
 
 Applied ML Scientist & AI Engineer with 7+ years building production 
 AI systems — GenAI, RAG, agentic architectures, MLOps on Azure & GCP.
