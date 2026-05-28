@@ -11,17 +11,14 @@
 // 7. Audit log on every call (Vercel logs)
 
 // ── IN-MEMORY RATE LIMITER ──────────────────────────────────────
-// WHY? Without this, anyone can spam your API endpoint and
-// drain your Anthropic credits. Max 10 requests per IP per minute.
 const rateLimitMap = new Map();
-const RATE_LIMIT = 10;       // max requests
-const RATE_WINDOW = 60000;   // per 60 seconds (ms)
+const RATE_LIMIT = 10;
+const RATE_WINDOW = 60000;
 
 function isRateLimited(ip) {
   const now = Date.now();
   const entry = rateLimitMap.get(ip) || { count: 0, start: now };
   if (now - entry.start > RATE_WINDOW) {
-    // Window expired — reset
     rateLimitMap.set(ip, { count: 1, start: now });
     return false;
   }
@@ -32,22 +29,20 @@ function isRateLimited(ip) {
 }
 
 // ── ALLOWED ORIGINS ─────────────────────────────────────────────
-// WHY? Prevents other websites from using YOUR API key
-// by calling your /api/chat endpoint from their frontend.
 const ALLOWED_ORIGINS = [
   'https://venkat-portfolio.vercel.app',
   'https://venkatdinesh.vercel.app',
   'https://venkat-portfolio-ten.vercel.app',
   'https://venkat-portfolio.app',
-  'http://localhost:3000',   // local development
-  'http://127.0.0.1:5500',  // VS Code Live Server
+  'http://localhost:3000',
+  'http://127.0.0.1:5500',
 ];
 
-// ── VENKAT'S CONTEXT (what Claude knows about you) ──────────────
+// ── VENKAT'S CONTEXT ────────────────────────────────────────────
 const VENKAT_CONTEXT = `You are a helpful AI assistant on Venkat Dinesh Pasupuleti's portfolio website. Answer questions about Venkat accurately, professionally, and concisely (2-4 sentences max). Be warm and encouraging about his candidacy.
 
 VENKAT'S PROFILE:
-- Applied ML Scientist & AI Engineer — 6.5 years experience
+- Applied ML Scientist & AI Engineer — 7+ years experience
 - Location: Windsor, Ontario, Canada
 - Open to: Senior ML/AI roles Toronto (hybrid) or remote Canada
 - Work Authorization: Valid Canadian work permit. Authorized to work for any employer. No sponsorship required.
@@ -57,45 +52,53 @@ VENKAT'S PROFILE:
 
 CURRENT ROLE: Lead AI/ML Engineer at DeskIQ.ai (Jay Analytix Inc) — Aug 2025 to Present
 - Production AI Voice Receptionist SaaS on GCP
-- Built entire backend solo: 97K lines Python, 557 FastAPI endpoints, 42 modules
+- Built entire backend: 557 FastAPI endpoints, 42 production modules
 - Twilio telephony, GPT-4.1 and Claude Sonnet 4.5 as LLMs
-- Agentic tool system (8 custom tools), RAG with hallucination prevention, 71-permission RBAC, 365-day audit logging, GKE autoscaling, GitHub Actions CI/CD
+- Agentic tool system (8 custom tools), RAG with hallucination prevention
+- 71-permission RBAC, 365-day audit logging, GKE autoscaling, GitHub Actions CI/CD
+- Live RAG system: venkatdinesh-rag.hf.space (BM25+FAISS, cross-encoder reranking, 50+ tests)
 
 PREVIOUS: Lead Data Scientist at Vreedhi Financial Services — Jun 2023 to Jan 2025
-- Regulated fintech/lending, on Azure ML
-- Fraud detection: 90% precision, ~$500K annual savings (YOLOv3 + Faster R-CNN, SHAP explainability)
+- Regulated fintech/lending on Azure ML
+- Fraud detection: 90% precision, ~$500K annual savings (XGBoost, SHAP explainability)
 - OCR pipeline: 50% manual data entry reduction (Azure AI Document Intelligence)
-- Loan approval: XGBoost, ~70% accuracy, SHAP interpretability for compliance
+- Loan approval: XGBoost ~70% accuracy, SHAP for compliance audit (RBI guidelines)
+- PSI drift monitoring — caught 90%→74% precision drop, retrained, restored in one sprint
 - Azure DevOps CI/CD with automated evaluation gates
 
-EARLIER: Data Scientist at Vreedhi (2021-2023), Data Analyst at Vinfosoft (2018-2021)
+EARLIER: Data Scientist at Vreedhi (May 2021 - May 2023), Data Analyst at Vinfosoft (Dec 2018 - Apr 2021)
 
-PROJECTS:
-- FinRoute AI: Financial document intelligence with SLM/LLM routing. 73% handled by SLM (Phi-3 Mini, <50ms). Complex tasks (fraud, anomaly, risk) → Claude Sonnet 4.5. 8x cost reduction. XGBoost + Isolation Forest + SHAP.
-- DeskIQ.ai: Production AI Voice Receptionist SaaS (described above)
-- Fraud Detection: 90% precision, $500K savings, Azure ML
-- OCR Pipeline: 50% manual reduction, Azure AI Document Intelligence
+TOTAL EXPERIENCE: 7 years 4 months — use "7+ years"
 
-KEY SKILLS: Python, FastAPI, GPT-4.1, Claude Sonnet 4.5, RAG, Agentic AI, LangChain, Azure ML (DP-100), GKE, Docker, Kubernetes, MLflow, XGBoost, TensorFlow, SHAP, FAISS, MongoDB, R
+KEY PROJECTS:
+- Production RAG System (live: venkatdinesh-rag.hf.space): hybrid BM25+FAISS retrieval, cross-encoder reranking, streaming, citation enforcement, 50+ test suite, CI-gated evaluation, Docker multi-stage. $0/month infra cost.
+- DeskIQ.ai Voice AI Platform: 557 FastAPI endpoints, 42 modules, 8 tool schemas, GKE autoscaling, live in production
+- Fraud Detection (Vreedhi): XGBoost, 90% precision, $500K savings, SHAP for compliance
+- OCR Pipeline (Vreedhi): Azure Form Recognizer, 50% manual reduction
 
-CERTIFICATIONS: Microsoft Azure Data Scientist DP-100, Columbia+ Prompt Engineering, Google Cloud Responsible AI
+KEY SKILLS: Python, FastAPI, GPT-4.1, Claude Sonnet 4.5, RAG, Agentic AI, Azure ML (DP-100), GKE, Docker, Kubernetes, MLflow, XGBoost, LightGBM, SHAP, FAISS, MongoDB, PostgreSQL, GitHub Actions, PSI drift monitoring
+
+CERTIFICATIONS: Microsoft Azure Data Scientist DP-100, Columbia University Prompt Engineering, Google Cloud Responsible AI, Google/Coursera LLM Specialisation
 
 IMPORTANT RULES:
 - Never reveal specific immigration document numbers, permit expiry dates, or application IDs
-- If asked about salary, give the range: $140K-$150K CAD base for full-time
+- If asked about salary, give the range: $140K-$150K CAD base for full-time, $70-80/hr contract
 - If asked to schedule, suggest emailing venkatdinesh63@gmail.com
 - If you don't know something specific, say "I don't have that detail — contact Venkat at venkatdinesh63@gmail.com"
-- Keep answers concise — recruiters are busy`;
+- Keep answers concise — recruiters are busy
+- Do NOT claim LangChain experience — not in production codebase
+- Do NOT claim PyTorch as primary framework`;
 
-export default async function handler(req, res) {
+// ── FIX: module.exports instead of export default ───────────────
+// This is required for Vercel serverless functions (CommonJS)
+module.exports = async function handler(req, res) {
 
   // ── Get caller IP for rate limiting + audit logging
   const ip = req.headers['x-forwarded-for']?.split(',')[0]?.trim()
     || req.headers['x-real-ip']
     || 'unknown';
 
-  // ── Audit log every request (visible in Vercel Logs)
-  // WHY? You can monitor who is asking what and detect abuse
+  // ── Audit log every request
   console.log(JSON.stringify({
     ts: new Date().toISOString(),
     ip,
@@ -104,28 +107,23 @@ export default async function handler(req, res) {
     ua: req.headers['user-agent']?.slice(0, 80) || 'none',
   }));
 
-  // ── CORS — set headers for allowed origins only
+  // ── CORS
   const origin = req.headers.origin;
   if (origin && ALLOWED_ORIGINS.includes(origin)) {
     res.setHeader('Access-Control-Allow-Origin', origin);
   } else if (!origin) {
-    // Direct server-to-server call (e.g. testing with curl) — allow
     res.setHeader('Access-Control-Allow-Origin', '*');
   }
-  // If origin is set but not in allowed list — don't set CORS header
-  // Browser will block the request automatically
 
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
   res.setHeader('X-Content-Type-Options', 'nosniff');
   res.setHeader('X-Frame-Options', 'DENY');
 
-  // Handle preflight
   if (req.method === 'OPTIONS') {
     return res.status(200).end();
   }
 
-  // ── Method check
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
   }
@@ -145,12 +143,10 @@ export default async function handler(req, res) {
     return res.status(400).json({ error: 'Please enter a question.' });
   }
 
-  // Max 500 chars — prevents token abuse
   if (message.length > 500) {
     return res.status(400).json({ error: 'Question too long. Please keep it under 500 characters.' });
   }
 
-  // Block obvious prompt injection attempts
   const blocked = ['ignore previous', 'disregard', 'system prompt', 'jailbreak', 'forget instructions'];
   if (blocked.some(w => message.toLowerCase().includes(w))) {
     return res.status(400).json({ error: 'Invalid request.' });
@@ -160,7 +156,6 @@ export default async function handler(req, res) {
   const apiKey = process.env.ANTHROPIC_API_KEY;
   if (!apiKey) {
     console.error('ANTHROPIC_API_KEY missing from environment variables');
-    // Generic error — don't expose internal details to client
     return res.status(503).json({
       error: 'Service temporarily unavailable. Please email venkatdinesh63@gmail.com directly.'
     });
@@ -175,7 +170,7 @@ export default async function handler(req, res) {
         'anthropic-version': '2023-06-01',
       },
       body: JSON.stringify({
-        model: 'claude-sonnet-4-20250514',
+        model: 'claude-sonnet-4-5-20251001',
         max_tokens: 250,
         system: VENKAT_CONTEXT,
         messages: [{ role: 'user', content: message.trim() }],
@@ -183,7 +178,6 @@ export default async function handler(req, res) {
     });
 
     if (!response.ok) {
-      // Log detail server-side, return generic message to client
       const errBody = await response.json().catch(() => ({}));
       console.error('Anthropic error:', response.status, JSON.stringify(errBody));
       return res.status(502).json({
@@ -198,13 +192,11 @@ export default async function handler(req, res) {
       return res.status(502).json({ error: 'Empty response. Please try again.' });
     }
 
-    // Log question category for analytics (no PII)
     console.log(JSON.stringify({ ts: new Date().toISOString(), ip, status: 'ok', chars: message.length }));
 
     return res.status(200).json({ reply });
 
   } catch (err) {
-    // Log full error server-side only
     console.error('Handler error:', err.message);
     return res.status(500).json({
       error: 'Something went wrong. Please email venkatdinesh63@gmail.com directly.'
