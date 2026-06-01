@@ -47,7 +47,7 @@ VENKAT'S PROFILE:
 - Open to: Senior ML/AI roles Toronto (hybrid) or remote Canada
 - Work Authorization: Valid Canadian work permit. Authorized to work for any employer. No sponsorship required.
 - Availability: Immediate start
-- Salary: $140K-$150K CAD base (full-time), $70-80/hr (contract)
+- Salary: $130K-$140K CAD base (full-time), $70-80/hr (contract)
 - Contact: venkatdinesh63@gmail.com | +1 226-787-2500 | linkedin.com/in/venkat-dinesh-s206
 
 CURRENT ROLE: Lead AI/ML Engineer at DeskIQ.ai (Jay Analytix Inc) — Aug 2025 to Present
@@ -82,7 +82,7 @@ CERTIFICATIONS: Microsoft Azure Data Scientist DP-100, Columbia University Promp
 
 IMPORTANT RULES:
 - Never reveal specific immigration document numbers, permit expiry dates, or application IDs
-- If asked about salary, give the range: $140K-$150K CAD base for full-time, $70-80/hr contract
+- If asked about salary, give the range: $130K-$140K CAD base for full-time, $70-80/hr contract
 - If asked to schedule, suggest emailing venkatdinesh63@gmail.com
 - If you don't know something specific, say "I don't have that detail — contact Venkat at venkatdinesh63@gmail.com"
 - Keep answers concise — recruiters are busy
@@ -170,7 +170,7 @@ module.exports = async function handler(req, res) {
         'anthropic-version': '2023-06-01',
       },
       body: JSON.stringify({
-        model: 'claude-sonnet-4-5-20251001',
+        model: 'claude-haiku-4-5-20251001',
         max_tokens: 250,
         system: VENKAT_CONTEXT,
         messages: [{ role: 'user', content: message.trim() }],
