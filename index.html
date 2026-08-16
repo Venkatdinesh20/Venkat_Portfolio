@@ -765,7 +765,23 @@ themeBtn.addEventListener('click',()=>{
 // ── 5. NAV ───────────────────────────────────────────────────────
 const ham=document.getElementById('ham'),navl=document.getElementById('navl');
 ham.addEventListener('click',()=>{const o=ham.classList.toggle('open');navl.classList.toggle('open');ham.setAttribute('aria-expanded',o)});
-navl.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>{ham.classList.remove('open');navl.classList.remove('open');ham.setAttribute('aria-expanded',false)}));
+function navScrollTo(id){
+  const el=document.getElementById(id);
+  if(!el)return;
+  const navH=document.getElementById('nav').offsetHeight||64;
+  const top=Math.max(el.getBoundingClientRect().top+window.pageYOffset-(navH+4),0);
+  window.scrollTo({top,behavior:'smooth'});
+  if(history.pushState)history.pushState(null,'','#'+id);
+}
+document.querySelectorAll('a[href^="#"]').forEach(a=>{
+  const id=a.getAttribute('href').slice(1);
+  if(!id||!document.getElementById(id))return;
+  a.addEventListener('click',e=>{
+    e.preventDefault();
+    ham.classList.remove('open');navl.classList.remove('open');ham.setAttribute('aria-expanded',false);
+    requestAnimationFrame(()=>navScrollTo(id));
+  });
+});
 window.addEventListener('scroll',()=>{document.getElementById('nav').style.boxShadow=window.scrollY>40?'0 4px 40px rgba(0,0,0,.3)':'none'},{passive:true});
 
 // ── 6. SCROLL REVEALS ────────────────────────────────────────────
