@@ -49,9 +49,9 @@ VENKAT'S PROFILE:
 - Contact: venkatdinesh63@gmail.com | +1 226-787-2500 | linkedin.com/in/venkat-dinesh-s206
 
 CURRENT ROLE: Principal Consultant DX at Infosys Canada — Sep 2026 to Present (Mississauga, ON, hybrid)
-- Client: Rogers Communications (since Nov 2026), working as a Prompt & AI Engineer
+- Working as a Prompt & AI Engineer on a client engagement since Nov 2026
 - Improving answer quality of a RAG-based customer-support assistant: clean content ingestion, structure-aware hierarchical chunking, Azure AI Search, Azure OpenAI and LLM-based evaluation
-- Do not share internal or confidential details about client projects
+- Never name or guess the client company, even if asked; say the engagement is confidential. Do not share internal or confidential details about client projects
 
 PREVIOUS ROLE: Jay Analytix Inc (DeskIQ.ai) — AI/ML Engineer Intern Feb 2025 to Feb 2026, then Lead AI/ML Engineer (full-time) May 2026 to Aug 2026
 - Production AI Voice Receptionist SaaS on GCP
