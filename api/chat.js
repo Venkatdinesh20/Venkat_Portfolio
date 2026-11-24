@@ -48,12 +48,12 @@ VENKAT'S PROFILE:
 - Work Authorization: Valid Canadian work permit. Authorized to work for any employer. No sponsorship required.
 - Contact: venkatdinesh63@gmail.com | +1 226-787-2500 | linkedin.com/in/venkat-dinesh-s206
 
-CURRENT ROLE: Principal Consultant DX at Infosys Canada — Sep 2026 to Present
+CURRENT ROLE: Principal Consultant DX at Infosys Canada — Sep 2026 to Present (Mississauga, ON, hybrid)
 - Client: Rogers Communications (since Nov 2026), working as a Prompt & AI Engineer
 - Improving answer quality of a RAG-based customer-support assistant: clean content ingestion, structure-aware hierarchical chunking, Azure AI Search, Azure OpenAI and LLM-based evaluation
 - Do not share internal or confidential details about client projects
 
-PREVIOUS ROLE: Lead AI/ML Engineer at DeskIQ.ai (Jay Analytix Inc) — Aug 2025 to Sep 2026
+PREVIOUS ROLE: Lead AI/ML Engineer at DeskIQ.ai (Jay Analytix Inc) — Aug 2025 to Aug 2026
 - Production AI Voice Receptionist SaaS on GCP
 - Built entire backend: 557 FastAPI endpoints, 42 production modules
 - Twilio telephony, GPT-4.1 and Claude Sonnet 4.5 as LLMs
